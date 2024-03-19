@@ -6,152 +6,33 @@
 <p>Selecione o recipiente para montar seu sorvete. A quantidade de bolas de sorvete pode variar, e você pode escolher diferentes sabores.</p>
 
 <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+
+	{% for emb  in embalagens %}
 	<div class="col">
-		<a href="" class="link-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		<div class="card border-0" style="height: 250px; background-size: cover; background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
+		<a href="" class="link-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#sabores_{{emb.id}}">
+		<div class="card border-0" style="height: 250px; background-size: cover; 
+			background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
 			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
 				<ul class="d-flex list-unstyled mt-auto text-dark">
 					<li class="d-flex align-items-center me-3"> 
-						<h1>1L</h1>
+						<h1>{{emb.tipo}}</h1>
 					</li>
 					<li class="d-flex align-items-center">
 						<svg class="bi me-2" width="1em" height="1em">
 							<use xlink:href="#calendar3"></use>
 						</svg>
-						<h2>12 Bolas</h2>
+						<h6>{{emb.capacidade_maxima_bolas}} Bolas</h6>
 					</li>
 				</ul>
 			</div>
 		</div>
 		</a>
-	</div> 
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-scrollable">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		</div> 
-		<div class="modal-body"> 
+	</div>
+
+	{% include "sabores.html" %}
+
+	{% endfor %} 
  
-				<img class="img-fluid" width="180" src="https://static1.minhavida.com.br/articles/cd/34/02/f6/essa-e-a-razao-pela-qual-voce-nao-deve-guardar-alimentos-no-pote-de-sorvete-orig-1.jpg" alt="">
-				<div>
-					<h3>Pote de Sorvete 1L</h3>
-					<p>Você pode escolher 12 bolas e coberturas</p>  
-				</div>  
-				
- 				<div class="d-flex justify-content-between bg-light border-3 p-3"> 
-					<span class="fs-4 fw-bold">Sabores Tradicionais</span>
-					<span class="fs-4 fw-bold">0 / 12 <span class="badge bg-secondary">Obrigatório</span></span>
-				</div>
-				<div class="d-flex align-items-center p-3 border"> 
-					<div class="p-2 flex-grow-1 text-start">
-						<img src="https://gelaboca.com.br/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2023/04/sabores-de-sorvete-morango-768x520.jpg.webp" class="" width="80" alt="..."> 
-						<span class="fw-bold">Morango</span> 
-					</div>
-					<div class="qty">
-						<span class="minus bg-dark">-</span>
-						<input type="number" class="count" name="qty" value="0">
-						<span class="plus bg-dark">+</span>
-					</div>
-				</div>
-
-				<div class="d-flex justify-content-between bg-light border-3 p-3">
-					<span class="fs-4 fw-bold">Sabores Premium</span> 
-				</div>
-				<div class="d-flex align-items-center p-3 border"> 
-					<div class="p-2 flex-grow-1 text-start">
-						<img src="https://gelaboca.com.br/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2023/04/sabores-de-sorvete-morango-768x520.jpg.webp" class="" width="80" alt="..."> 
-						<span class="fw-bold">Morango</span> 
-					</div>
-					<div class="qty">
-						<span class="minus bg-dark">-</span>
-						<input type="number" class="count" name="qty" value="0">
-						<span class="plus bg-dark">+</span>
-					</div>
-				</div> 
- 
- 		</div>  
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-primary btn-lg">Adicionar</button> 
-		</div>
-	  </div>
-	</div>
-  </div>
-
-	<div class="col">
-		<div class="card border-0" style="height: 250px; background-size: cover; background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<ul class="d-flex list-unstyled mt-auto text-dark">
-					<li class="d-flex align-items-center me-3"> 
-						<h1>1L</h1>
-					</li>
-					<li class="d-flex align-items-center">
-						<svg class="bi me-2" width="1em" height="1em">
-							<use xlink:href="#calendar3"></use>
-						</svg>
-						<h2>12 Bolas</h2>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<div class="col">
-		<div class="card border-0" style="height: 250px; background-size: cover; background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<ul class="d-flex list-unstyled mt-auto text-dark">
-					<li class="d-flex align-items-center me-3"> 
-						<h1>1L</h1>
-					</li>
-					<li class="d-flex align-items-center">
-						<svg class="bi me-2" width="1em" height="1em">
-							<use xlink:href="#calendar3"></use>
-						</svg>
-						<h2>12 Bolas</h2>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<div class="col">
-		<div class="card border-0" style="height: 250px; background-size: cover; background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<ul class="d-flex list-unstyled mt-auto text-dark">
-					<li class="d-flex align-items-center me-3"> 
-						<h1>1L</h1>
-					</li>
-					<li class="d-flex align-items-center">
-						<svg class="bi me-2" width="1em" height="1em">
-							<use xlink:href="#calendar3"></use>
-						</svg>
-						<h2>12 Bolas</h2>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<div class="col">
-		<div class="card border-0" style="height: 250px; background-size: cover; background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<ul class="d-flex list-unstyled mt-auto text-dark">
-					<li class="d-flex align-items-center me-3"> 
-						<h1>1L</h1>
-					</li>
-					<li class="d-flex align-items-center">
-						<svg class="bi me-2" width="1em" height="1em">
-							<use xlink:href="#calendar3"></use>
-						</svg>
-						<h2>12 Bolas</h2>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
 </div> 
 {% endblock %}
 {% block scripts %}
@@ -159,16 +40,95 @@
 		$(document).ready(function(){
 		    $('.count').prop('disabled', true);
 
+			function atualizarTotalSelecionado(modalId) {
+				var totalSelecionado = 0;
+				$('.count_'+modalId).each(function() {
+					totalSelecionado += parseInt($(this).val());
+				});
+				$('#resultselsabor_' + modalId).text(totalSelecionado);
+			}
+
+			function atualizarColorDanger(modalId) {
+				$('#impResponse'+modalId).removeClass('bg-success')
+				$('#impResponse'+modalId).addClass('bg-secondary')
+			}
+
+			function atualizarColorSuccess(modalId) {
+				$('#impResponse'+modalId).removeClass('bg-secondary')
+				$('#impResponse'+modalId).addClass('bg-success')
+			} 
+
    			$(document).on('click','.plus',function(){
-				$('.count').val(parseInt($('.count').val()) + 1 );
+				var modalId = $(this).closest('.modal').data('modalid');  
+				var input = $(this).siblings('input.count_'+modalId);  
+				var capacidadeMaxima = $('#selsabor_'+modalId).data('capmax');
+
+				var totalSelecionado = 0;
+				// Calcular o total selecionado para todos os sabores
+				$('.count_'+modalId).each(function() {
+					totalSelecionado += parseInt($(this).val()); 
+				});
+
+			 	// Calcular o total selecionado para todos os sabores
+				if ((totalSelecionado + 1) <= (capacidadeMaxima)) {
+					input.val(parseInt(input.val()) + 1);
+					atualizarColorDanger(modalId)
+
+					if ((totalSelecionado + 1) == capacidadeMaxima) {
+						atualizarColorSuccess(modalId)
+					}
+				} else { 
+					// Excedeu a capacidade máxima  
+					atualizarColorSuccess(modalId)
+					console.log('Capacidade máxima atingida');
+
+				}
+
+				atualizarTotalSelecionado(modalId);
+ 
     		});
 			
         	$(document).on('click','.minus',function(){
-    			$('.count').val(parseInt($('.count').val()) - 1 );
-    				if ($('.count').val() == -1) {
-						$('.count').val(0);
+				var modalId = $(this).closest('.modal').data('modalid');
+				var input = $(this).siblings('input.count_' + modalId);
+    			input.val(parseInt(input.val()) - 1);
+    				if (input.val() == -1) {
+						input.val(0);
 					}
+ 				atualizarColorDanger(modalId)
+				
+ 				// Atualizar o totalSelecionado após a subtração
+				atualizarTotalSelecionado(modalId);
     	    	});
+			
+
+			// Coberturas/Adicionais 
+			$(document).on('click', '.plus', function(){
+				var modalId = $(this).closest('.modal').data('modalid');
+				var input = $(this).siblings('input.selcobertura_'+modalId); 
+				input.val(parseInt(input.val()) + 1); 
+			});
+			$(document).on('click', '.minus', function(){
+				var modalId = $(this).closest('.modal').data('modalid');
+				var input = $(this).siblings('input.selcobertura_'+modalId); 
+				input.val(parseInt(input.val()) - 1);
+				if (input.val() < 0) {
+					input.val(0);
+				} 
+			});
+			
+			// Quantidade de itens
+			$(document).on('click', '.item_plus, .item_minus', function() {
+				var modalId = $(this).closest('.modal').data('modalid');
+				var inputQtdPote = $(this).siblings('input.qtdPote_'+modalId); 
+				
+				var increment = $(this).hasClass('item_plus') ? 1 : -1;
+				
+				var newValue = parseInt(inputQtdPote.val()) + increment;
+				inputQtdPote.val(Math.max(newValue, 1));
+			});
+
+ 
  		});
 	</script>
 {% endblock scripts %}
