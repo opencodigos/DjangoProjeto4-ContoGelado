@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-def index(request):
-    return render(request, 'index.html')
+def inicio(request):
+    return render(request, 'inicio.html')
+
+def cardapio(request):
+    return render(request, 'cardapio.html')
