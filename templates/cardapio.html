@@ -38,15 +38,50 @@
 {% block scripts %}
 	<script>
 		$(document).ready(function(){
-		    $('.count').prop('disabled', true);
+		    $('.dsb').prop('disabled', true);
 
 			function atualizarTotalSelecionado(modalId) {
 				var totalSelecionado = 0;
+				var saboresSelecionados = [];
+
 				$('.count_'+modalId).each(function() {
 					totalSelecionado += parseInt($(this).val());
+					
+					var saborId = $(this).data('saborid');
+					var quantidade = parseInt($(this).val());
+					
+					if (quantidade > 0) {
+						saboresSelecionados.push({
+							'sabor_id': saborId,
+							'quantidade': quantidade
+						});
+					}
+
+
 				});
 				$('#resultselsabor_' + modalId).text(totalSelecionado);
+
+				console.log(saboresSelecionados);
+				return saboresSelecionados;
 			}
+
+
+			function selCobertura(modalId) {
+				var selCobertura= [];
+				$('.selcobertura_' + modalId).each(function () {
+					var coberturaid = $(this).data('coberturaid');
+					var quantidade = parseInt($(this).val());
+					if (quantidade > 0) {
+						selCobertura.push({
+							'cobertura_id': coberturaid,
+							'quantidade': quantidade
+						});
+					}
+				});
+				console.log(selCobertura);
+				return selCobertura;
+			}
+
 
 			function atualizarColorDanger(modalId) {
 				$('#impResponse'+modalId).removeClass('bg-success')
@@ -107,6 +142,7 @@
 				var modalId = $(this).closest('.modal').data('modalid');
 				var input = $(this).siblings('input.selcobertura_'+modalId); 
 				input.val(parseInt(input.val()) + 1); 
+				selCobertura(modalId)
 			});
 			$(document).on('click', '.minus', function(){
 				var modalId = $(this).closest('.modal').data('modalid');
@@ -115,6 +151,7 @@
 				if (input.val() < 0) {
 					input.val(0);
 				} 
+				selCobertura(modalId)
 			});
 			
 			// Quantidade de itens
@@ -128,7 +165,59 @@
 				inputQtdPote.val(Math.max(newValue, 1));
 			});
 
- 
+			// Coleta itens para sacola 
+			$('.btnEnviarSacola').click(function () {
+				
+				// Obter o modalId do atributo data-modalid
+				var modalId = $(this).closest('.modal').data('modalid');
+				
+				var saboresSelecionados = atualizarTotalSelecionado(modalId);
+
+				var coberturaSelecionadas = selCobertura(modalId);
+
+				var quantidade_pote = parseInt($('.qtdPote_' + modalId).val()) || 1;
+
+				var dados = {
+					'embalagem_id': modalId,
+					'sabores_selecionados': saboresSelecionados,
+					'cobertura_selecionadas': coberturaSelecionadas,
+					'quantidade_pote': quantidade_pote
+				};
+				console.log(dados);
+				
+				// Faça uma solicitação AJAX para a view Django
+				$.ajax({
+					type: 'POST',
+					url: "{% url 'adicionar_sacola' %}",  // Substitua pela URL correta
+					data: {
+						'dados': JSON.stringify(dados),
+						'csrfmiddlewaretoken': '{{ csrf_token }}'  // Token CSRF
+					},
+					dataType: 'json', 
+					success: function (response) {
+						// Handle a resposta da view aqui
+						if (response.status === 'success') {
+							console.log('Itens adicionados à sacola com sucesso!');
+							location.reload();
+						} else {
+							console.error('Erro ao adicionar itens à sacola:', response.message);
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error('Erro na solicitação AJAX:', error);
+					}
+				}); 
+
+
+
+
+
+				
+			});
+
+
+
+
  		});
 	</script>
 {% endblock scripts %}

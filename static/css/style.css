@@ -76,3 +76,22 @@ input::-webkit-inner-spin-button {
 input:disabled{
     background-color:white;
 }
+
+/* Menu */
+.offcanvas.offcanvas-end {
+    width: 550px;
+}
+
+.list-group-item {
+    height: 110px;
+    border: none;
+    border-bottom: 2px solid;
+    margin-bottom: 20px; 
+}
+
+.list-group-item .list-item {
+    font-size: 12px;
+    font-style: italic;
+    color: gray;
+    width: 290px; 
+}

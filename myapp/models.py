@@ -76,20 +76,41 @@ class MontaPote(models.Model):
     embalagem = models.ForeignKey(Embalagem, 
                                   related_name='embalagem', 
                                   on_delete=models.CASCADE, null=True)
-    coberturas = models.ManyToManyField(Cobertura)
     quantidade = models.PositiveIntegerField(null=True) 
 
     def preco_total(self):
         preco_embalagem = self.embalagem.preco if self.embalagem else 0
-        preco_coberturas = sum(cobertura.preco for cobertura in self.coberturas.all())
         preco_sabores = 0
+        preco_coberturas = 0
         for selsabor in self.pote.all(): 
             preco_sabor = selsabor.sabor.tipo.preco
             quantidade_bolas = selsabor.quantidade_bolas
             preco_sabores += preco_sabor * quantidade_bolas 
+
+        for selcobertura in self.pote_cobertura.all():
+            preco_cobertura = selcobertura.cobertura.preco
+            quantidade_cobertura = selcobertura.quantidade_cobertura
+            preco_coberturas += preco_cobertura * quantidade_cobertura
+
         total_pote = preco_embalagem + preco_coberturas + preco_sabores
         total = total_pote * self.quantidade 
         return total
+
+    def obter_descricao_sabores(self):
+        descricao_sabores = []
+        for sel_sabor in self.pote.all():
+            quantidade_sabor = sel_sabor.quantidade_bolas
+            descricao_sabor = f"{quantidade_sabor}x {sel_sabor.sabor.nome}"
+            descricao_sabores.append(descricao_sabor)
+        return ";".join(descricao_sabores)
+
+    def obter_descricao_coberturas(self):
+        descricao_coberturas = []
+        for sel_cobertura in self.pote_cobertura.all():
+            quantidade_cobertura = sel_cobertura.quantidade_cobertura
+            descricao_cobertura = f"{quantidade_cobertura}x {sel_cobertura.cobertura.nome}"
+            descricao_coberturas.append(descricao_cobertura)
+        return ";".join(descricao_coberturas)
 
     def __str__(self):
         return f"ID: {self.id} / POTE: {self.embalagem.tipo} \
@@ -117,6 +138,23 @@ class SelSabor(models.Model):
     class Meta:
         verbose_name = 'A - SelSabor'
         verbose_name_plural = 'A - SelSabor'
+
+
+class SelCobertura(models.Model):
+    pote = models.ForeignKey(MontaPote, 
+                             related_name='pote_cobertura', 
+                             on_delete=models.CASCADE, null=True) 
+    cobertura = models.ForeignKey(Cobertura,
+                                  related_name='cobertura', 
+                                  on_delete=models.CASCADE, null=True)
+    quantidade_cobertura = models.PositiveIntegerField()
+    
+    def __str__(self):
+        return f"Cobertura: {self.cobertura.nome}, Quantidade: {self.quantidade_cobertura}"
+    
+    class Meta:
+        verbose_name = 'A - SelCobertura'
+        verbose_name_plural = 'A - SelCobertura'
 
 
 # Sacolas de Itens (CArrinho)

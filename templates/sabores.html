@@ -34,7 +34,7 @@
 			<div class="qty">
 				<span class="minus bg-dark">-</span>
 				<input type="hidden" class="selsabor" id="selsabor_{{emb.id}}" data-modalid="{{emb.id}}" data-capmax="{{emb.capacidade_maxima_bolas}}">
-				<input type="number" class="count_{{emb.id}}" data-saborid="{{s.id}}" name="qty" value="0">					
+				<input type="number" class="dsb count_{{emb.id}}" data-saborid="{{s.id}}" name="qty" value="0">					
 				<span class="plus bg-dark">+</span>
 			  </div> 
 		</div>
@@ -52,7 +52,7 @@
 			</div>
 			<div class="qty" >
 				<span class="minus bg-dark">-</span>
-				<input type="number" class="selcobertura_{{emb.id}}" data-coberturaid="{{c.id}}" 
+				<input type="number" class="dsb selcobertura_{{emb.id}}" data-coberturaid="{{c.id}}" 
 					id="selcobertura_{{emb.id}}" name="selcobertura_{{emb.id}}" value="0" disabled>					
 				<span class="plus bg-dark">+</span>
 			</div>
@@ -68,8 +68,12 @@
 				<span class="plus item_plus bg-dark">+</span>
 			</div>
 
-			<button type="button" class="btn btn-primary btn-lg">Adicionar</button> 
-		  
+			{% if request.user.is_authenticated %}
+			<button type="button" class="btn btn-primary btn-lg btnEnviarSacola">Adicionar</button> 
+			{% else %} 
+			<a class="btn btn-dark btn-lg" href="/admin/login">Faça o Login</a>
+			{% endif %}
+
 		</div>
 	  </div>
 	</div>

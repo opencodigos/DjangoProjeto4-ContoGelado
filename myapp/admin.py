@@ -3,11 +3,14 @@ from .models import *
 
 admin.site.register(Embalagem)
 admin.site.register(TipoSabor)
-admin.site.register(Sabor)
+admin.site.register(Sabor) 
 admin.site.register(Cobertura)
 
+# Monta Pote 
+class SelCoberturaInline(admin.TabularInline):
+    model = SelCobertura
+    extra = 0 
 
-# Monta Pote
 class SelSaborInline(admin.TabularInline):
     model = SelSabor
     extra = 0
@@ -15,10 +18,11 @@ class SelSaborInline(admin.TabularInline):
 @admin.register(MontaPote)
 class MontaPoteAdmin(admin.ModelAdmin):
     inlines = [
-        SelSaborInline
+        SelSaborInline,
+        SelCoberturaInline
     ] 
 
-# Sacola de Itens
+# Sacola de Itens 
 class MontaPoteInline(admin.TabularInline):
     model = SacolaItens.potes.through
     extra = 0
