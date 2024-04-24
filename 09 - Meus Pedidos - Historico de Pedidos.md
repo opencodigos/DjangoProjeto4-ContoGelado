@@ -1,5 +1,44 @@
+##Meus Pedidos / Historico de Pedidos
+
+views.py
+
+```python
+@login_required(login_url="/admin/login/")
+def meus_pedidos(request):
+    meus_pedidos = Pedido.objects.filter(user=request.user)
+    return render(request, 'meus-pedidos.html', {'meus_pedidos': meus_pedidos})
+```
+
+urls.py
+
+```python
+path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
+```
+
+Navbar.html
+
+https://getbootstrap.com/docs/5.3/components/dropdowns/
+
+```python
+<!-- Meus Pedidos -->
+<div class="link-dark dropdown">
+    <a class="nav-link link-dark dropdown-toggle {% if request.path == '/meus-pedidos/' %}active{% endif %}"
+            data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        <i class="fas fa-user"></i>  {{request.user.first_name}} {{request.user.last_name}}</a>
+    <ul class="dropdown-menu dropdown-menu-dark">
+        <li><a href="{% url 'meus_pedidos' %}" 
+            class="dropdown-item rounded-2 {% if request.path == '/meus-pedidos/' %}active{% endif %}">Meus Pedidos</a></li> 
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item rounded-2" href="/admin/logout">Sair</a></li>
+    </ul>
+</div>  
+```
+
+meus-pedidos.html
+
+```python
 {% extends 'base.html' %}
-{% block title %}Meus Pedidos{% endblock %}
+{% block title %}Pagina 1{% endblock %}
 {% block content %} 
 <div class="mb-5">
     <h2>Meus Pedidos</h2>
@@ -9,6 +48,7 @@
         {% if not mp.entrega%}
         <div class="p-3 bg-warning rounded-5">
             <h4>Data do Pedido: {{ mp.data_pedido|date:"d/m/Y" }}</h4> 
+            <p>Status do Pedido: {% if mp.status %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %} </p>
             <p>Status do Pagamento: {% if mp.pago %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</p> 
             <p>Status da Entrega: {% if mp.entrega %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</p> 
 
@@ -18,7 +58,13 @@
         {% endfor %} 
     </div>
 </div> 
+{% endblock %}
+{% block scripts %} {% endblock scripts %}
+```
 
+Historico de pedidos
+
+```python
 
 <h2>Historico de Pedidos</h2>
 <p>Lista de Pedidos já finalizados</p>
@@ -44,32 +90,4 @@
         {% endfor %}
     </tbody>
 </table> 
-
-
-
-{% endblock %}
-{% block scripts %}  
-<script>
-    $(document).ready(function() {
-        $('.whatsapp-btn').click(function() {
-            var id = $(this).data('id'); 
-            $.ajax({
-                url: "{% url 'enviar_whatsapp_pedido' %}", // Substitua pela URL correta
-                type: 'POST',
-                data: {
-                    'pedido_id': id,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
-                },
-                success: function(data) { 
-                    // Feche o modal se necessário 
-                    console.log(data)
-                },
-                error: function(error) {
-                    console.log(error);
-                    alert('Erro ao atualizar o pedido.');
-                }
-            });
-        });
-  });
-  </script> 
-{% endblock scripts %}
+```
