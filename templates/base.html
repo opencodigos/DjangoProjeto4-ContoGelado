@@ -15,8 +15,19 @@
 </head>
 <body>  
 	<div class="container py-3"> 
-		{% include "components/navbar.html" %}
 
+		{% if request.path|slice:":18" == '/checkout-pedido/' %}
+		<div class="d-flex justify-content-between align-items-center">
+			<a class="link-dark text-decoration-none" href="{% url 'inicio' %}"><i class="fas fa-arrow-left fa-2x"></i></a>
+			<div>
+				<img src="https://via.placeholder.com/200" alt="" width="150">
+				<h2 class="link-dark text-decoration-none">Checkout</h2>
+			</div>
+		</div>
+		{% else %}
+		{% include 'components/navbar.html' %}
+		{% endif %}
+		
 		{% include 'components/messages.html' %}
 
 		<div class="wrapper">

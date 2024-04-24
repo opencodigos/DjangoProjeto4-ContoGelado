@@ -1,0 +1,27 @@
+{% load static %}
+<ul class="list-group mb-3">  
+    <!-- Lista de Itens do Carrinho --> 
+    {% for item in sacola_itens.potes.all %}
+    <li class="list-group-item d-flex align-items-center 
+        justify-content-between lh-sm pote-item" data-poteid="{{item.id}}">
+        <div class="text-start list-item">
+            <h6 class="my-0 text-dark fw-bold">Pote {{item.embalagem.tipo}} - R$ {{item.preco_total}} </h6>
+            <p class="my-0">Sabores: {{item.obter_descricao_sabores}}</p>
+            <p class="my-0">Coberturas: {{item.obter_descricao_coberturas|default:"Não"}}</p>				</div>  
+        <div class="qty">
+            <span class="minus sacola_minus bg-dark">-</span>
+            <input type="number" class="dsb countCartItem_{{item.id}}" id="countCartItem_{{item.id}}" 
+                name="countCartItem" value="{{item.quantidade}}"> 
+            <span class="plus sacola_plus bg-dark">+</span>
+        </div> 
+        <div class="div">
+            <a href="#" class="link-danger remove-item"> <i class="fas fa-trash"></i></a>
+        </div>
+    </li>
+    {% endfor %} 
+    <li class="list-group-item d-flex align-items-center 
+        justify-content-between p-3 text-success">
+        <span>Total (R$)</span>
+        <h2><strong id="atualizaValor">R$ {{sacola_itens.preco}}</strong></h2>
+    </li>
+</ul>   

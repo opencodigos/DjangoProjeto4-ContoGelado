@@ -121,4 +121,43 @@ $(document).ready(function() {
     });
 
 
+    // Pagina Finalizar Pedido
+    $("#cep").on('keyup', function () {
+        var cep = $(this).val().replace(/\D/g, '');
+        console.log(cep);
+        
+        if (cep.length === 8) {
+
+            // Fazer a chamada AJAX para buscar o endereço com base no CEP
+            $.ajax({
+                url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                method: 'GET',
+                success: function (data) { 
+                    
+                    var numero_casa = $("#numero_casa").val(); 
+
+                    // Criar o endereço formatado
+                    var enderecoFormatado = 'Rua: ' + data.logradouro + ', ' + 
+                    'Bairro: ' + data.bairro + ', ' + 
+                    'Cidade: ' + data.localidade + ', ' + 
+                    'Estado: ' + data.uf + ', ' + numero_casa;
+
+                    // Preencher o campo de endereço
+                    $("#id_endereco").val(enderecoFormatado);
+                },
+                error: function (error) {
+                    console.log("Erro ao buscar CEP:", error);
+                    alert("Erro ao buscar CEP. Verifique se o CEP é válido.");
+                }
+            });
+        }
+    });
+
+    $("#numero_casa").on('blur', function () {
+        var numero_casa = $(this).val().replace(/\D/g, ''); 
+        var cep = $("#id_endereco").val(); 
+        var enderecoFormatado = cep + ', ' +  numero_casa;
+        $("#id_endereco").val(enderecoFormatado);
+    });
+
 })

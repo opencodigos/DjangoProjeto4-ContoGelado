@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Meus Pedidos{% endblock %}
+{% block content %} 
+<div class="mb-5">
+    <h2>Meus Pedidos</h2>
+    <p>Lista de Pedidos ativos que estão processando</p>
+    <div class="d-flex gap-1 justify-content-center align-content-center flex-wrap">
+        {% for mp in meus_pedidos %}
+        {% if not mp.entrega%}
+        <div class="p-3 bg-warning rounded-5">
+            <h4>Data do Pedido: {{ mp.data_pedido|date:"d/m/Y" }}</h4> 
+            <p>Status do Pagamento: {% if mp.pago %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</p> 
+            <p>Status da Entrega: {% if mp.entrega %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</p> 
+
+            <button type="button" class="btn btn-success whatsapp-btn" data-id="{{ mp.id }}">Acompanhar pelo Whatsapp</button>
+        </div>
+        {% endif %} 
+        {% endfor %} 
+    </div>
+</div> 
+
+
+<h2>Historico de Pedidos</h2>
+<p>Lista de Pedidos já finalizados</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Data do Pedido</th>
+            <th>Status do Pedido</th>
+            <th>Status do Pagamento</th>
+            <th>Status da Entrega</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mp in meus_pedidos %}
+        {% if mp.pago and mp.entrega %}
+        <tr>
+            <td>{{ mp.data_pedido|date:"d/m/Y" }}</td>
+            <td>{% if mp.status %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
+            <td>{% if mp.pago %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
+            <td>{% if mp.entrega %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table> 
+
+
+
+{% endblock %}
+{% block scripts %}  
+<script>
+    $(document).ready(function() {
+        $('.whatsapp-btn').click(function() {
+            var id = $(this).data('id'); 
+            $.ajax({
+                url: "{% url 'enviar_whatsapp_pedido' %}", // Substitua pela URL correta
+                type: 'POST',
+                data: {
+                    'pedido_id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
+                },
+                success: function(data) { 
+                    // Feche o modal se necessário 
+                    console.log(data)
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert('Erro ao atualizar o pedido.');
+                }
+            });
+        });
+  });
+  </script> 
+{% endblock scripts %}
