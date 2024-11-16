@@ -1,7 +1,6 @@
 # from myapp import models
 
-from myapp.models import Pedido
-
+from myapp.models import Pedido 
 
 def context_social(request):
     return {'social': 'Exibir este contexto em qualquer lugar!'}

@@ -138,7 +138,7 @@ def checkout_pedido(request):
         form = PedidoUpdateForm(request.POST, instance=pedido)
         if form.is_valid():
             pedido = form.save(commit=False) 
-            pedido.status = False
+            pedido.status = False # Significa que pedido não está mais na sacola
             pedido.save()
             messages.success(request, 'Pedido atualizado com sucesso!')
             return redirect('cardapio')

@@ -1,88 +1,109 @@
 {% extends 'base.html' %}
 {% block title %}Gerenciar Pedidos{% endblock %}
 {% block content %}  
-<h2>Todos os Pedidos</h2>
-<p>Gerencia todos os Pedidos feitos de todos os clientes</p>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Data do Pedido</th>
-            <th>Status do Pedido</th>
-            <th>Status do Pagamento</th>
-            <th>Status da Entrega</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for tp in todos_pedidos %}
-    <tr class="clickable" data-bs-toggle="modal" data-bs-target="#dtlPedido{{ tp.id }}">
-        <td>{{ tp.data_pedido|date:"d/m/Y" }}</td>
-        <td>{% if tp.status %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
-        <td>{% if tp.pago %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
-        <td>{% if tp.entrega %}<i class="fas fa-check-circle link-success"></i>{% else %}<i class="fas fa-times-circle link-danger"></i>{% endif %}</td>
-    </tr> 
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">Todos os Pedidos</h2>
+    <p class="text-muted">Gerencie todos os pedidos feitos pelos clientes de forma prática e eficiente.</p>
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Data do Pedido</th>
+                <th>Pedido Enviado</th>
+                <th>Status do Pagamento</th>
+                <th>Status da Entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tp in todos_pedidos %}
+        <tr class="clickable" data-bs-toggle="modal" data-bs-target="#dtlPedido{{ tp.id }}">
+            <td>{{ tp.data_pedido|date:"d/m/Y" }}</td>
+            <td class="text-center">
+                {% if not tp.status %}
+                    <i class="fas fa-check-circle text-success"></i>
+                {% else %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {% if tp.pago %}
+                    <i class="fas fa-check-circle text-success"></i>
+                {% else %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {% if tp.entrega %}
+                    <i class="fas fa-check-circle text-success"></i>
+                {% else %}
+                    <i class="fas fa-times-circle text-danger"></i>
+                {% endif %}
+            </td>
+        </tr> 
 
-    <div class="modal fade" id="dtlPedido{{ tp.id }}" tabindex="-1" aria-labelledby="dtlPedidoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="dtlPedidoLabel">Pedido {{ tp.data_pedido|date:"d/m/Y" }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-check">
-                        <input class="form-check-input status-checkbox" type="checkbox" value="" id="statusCheckbox{{ tp.id }}" {% if tp.status %}checked{% endif %}>
-                        <label class="form-check-label" for="statusCheckbox{{ tp.id }}">Status do Pedido</label>
+        <!-- Modal -->
+        <div class="modal fade" id="dtlPedido{{ tp.id }}" tabindex="-1" aria-labelledby="dtlPedidoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h1 class="modal-title fs-5" id="dtlPedidoLabel">Pedido de {{ tp.data_pedido|date:"d/m/Y" }}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input pago-checkbox" type="checkbox" value="" id="pagoCheckbox{{ tp.id }}" {% if tp.pago %}checked{% endif %}>
-                        <label class="form-check-label" for="pagoCheckbox{{ tp.id }}">Pagamento</label>
+                    <div class="modal-body">
+                        <!-- <div class="form-check mb-3">
+                            <input class="form-check-input status-checkbox" type="checkbox" value="" id="statusCheckbox{{ tp.id }}" {% if tp.status %}checked{% endif %}>
+                            <label class="form-check-label" for="statusCheckbox{{ tp.id }}">Pedido Realizado</label>
+                        </div> -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input pago-checkbox" type="checkbox" value="" id="pagoCheckbox{{ tp.id }}" {% if tp.pago %}checked{% endif %}>
+                            <label class="form-check-label" for="pagoCheckbox{{ tp.id }}">Pagamento</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input entrega-checkbox" type="checkbox" value="" id="entregaCheckbox{{ tp.id }}" {% if tp.entrega %}checked{% endif %}>
+                            <label class="form-check-label" for="entregaCheckbox{{ tp.id }}">Entregue</label>
+                        </div>
+                        <button type="button" class="btn btn-success atualizar-pedido w-100" data-id="{{ tp.id }}">Atualizar</button>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input entrega-checkbox" type="checkbox" value="" id="entregaCheckbox{{ tp.id }}" {% if tp.entrega %}checked{% endif %}>
-                        <label class="form-check-label" for="entregaCheckbox{{ tp.id }}">Entregue</label>
-                    </div>
-                    <button type="button" class="btn btn-dark atualizar-pedido" data-id="{{ tp.id }}">Atualizar</button>
                 </div>
             </div>
-        </div>
-    </div> 
-
-    {% endfor %}
-    </tbody>
-</table> 
+        </div> 
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
+
 {% block scripts %} 
 <script>
-    $(document).ready(function() {
-        $('.atualizar-pedido').click(function() {
-            var id = $(this).data('id');
-            var dados = {
-                'id': id,
-                'status': $('#statusCheckbox' + id).prop('checked'),
-                'pago': $('#pagoCheckbox' + id).prop('checked'),
-                'entrega': $('#entregaCheckbox' + id).prop('checked'), 
-            } 
-            console.log(dados)
-            $.ajax({
-                url: "{% url 'atualizar_pedido' %}", // Substitua pela URL correta
-                type: 'POST',
-                data: {
-                    'dados': JSON.stringify(dados),
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
-                },
-                success: function(data) { 
-                    console.log(data);
-                    // Feche o modal se necessário 
-                    $('#dtlPedido' + id).modal('hide');
-                    location.reload();
-                },
-                error: function(error) {
-                    console.log(error);
-                    alert('Erro ao atualizar o pedido.');
-                }
-            });
+$(document).ready(function() {
+    $('.atualizar-pedido').click(function() {
+        var id = $(this).data('id');
+        var dados = {
+            'id': id,
+            'status': $('#statusCheckbox' + id).prop('checked'),
+            'pago': $('#pagoCheckbox' + id).prop('checked'),
+            'entrega': $('#entregaCheckbox' + id).prop('checked'), 
+        } 
+        console.log(dados)
+        $.ajax({
+            url: "{% url 'atualizar_pedido' %}", // Substitua pela URL correta
+            type: 'POST',
+            data: {
+                'dados': JSON.stringify(dados),
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
+            },
+            success: function(data) { 
+                console.log(data);
+                // Feche o modal se necessário 
+                $('#dtlPedido' + id).modal('hide');
+                location.reload();
+            },
+            error: function(error) {
+                console.log(error);
+                alert('Erro ao atualizar o pedido.');
+            }
         });
     });
-    </script>
+});
+</script> 
 
 {% endblock scripts %} 

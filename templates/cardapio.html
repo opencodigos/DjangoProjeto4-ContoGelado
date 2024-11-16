@@ -1,40 +1,81 @@
 
 {% extends 'base.html' %}
+
 {% block title %}Cardápio{% endblock %}
-{% block content %}
-<h2 class="pb-2 border-bottom">Cardápio</h2>
+
+{% block styles %} 
+<style>
+    .card {
+        position: relative;
+		background-size: cover; 
+		background-position: center;  
+		height: 250px; transition: transform 0.3s;
+		border-radius: 10px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Adicionando o fundo preto com opacidade */
+    .card::after {
+        content: ""; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        background-color: rgba(0, 0, 0, 0.5); 
+		border-radius: 0px 0px 10px 10px;
+        z-index: 1;
+    }
+
+    .card .d-flex {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+{% endblock styles %}
+
+{% block content %} 
+<h2 class="display-5 fw-bold text-body-emphasis pb-2 border-bottom">Cardápio</h2>
 <p>Selecione o recipiente para montar seu sorvete. A quantidade de bolas de sorvete pode variar, e você pode escolher diferentes sabores.</p>
 
 <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
 
-	{% for emb  in embalagens %}
-	<div class="col">
-		<a href="" class="link-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#sabores_{{emb.id}}">
-		<div class="card border-0" style="height: 250px; background-size: cover; 
-			background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
-			<div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-				<ul class="d-flex list-unstyled mt-auto text-dark">
-					<li class="d-flex align-items-center me-3"> 
-						<h1>{{emb.tipo}}</h1>
-					</li>
-					<li class="d-flex align-items-center">
-						<svg class="bi me-2" width="1em" height="1em">
-							<use xlink:href="#calendar3"></use>
-						</svg>
-						<h6>{{emb.capacidade_maxima_bolas}} Bolas</h6>
-					</li>
-				</ul>
-			</div>
-		</div>
-		</a>
-	</div>
+    {% for emb in embalagens %}
+    
+    <div class="col">
+        <a href="" class="link-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#sabores_{{ emb.id }}">
+            <div class="card border-0 shadow" 
+				style="background-image: url('https://http2.mlstatic.com/D_NQ_NP_917685-MLB49794642888_042022-O.webp');">
+               
+                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                    <ul class="d-flex list-unstyled mt-auto text-light">
+                        <li class="d-flex align-items-center me-3"> 
+                            <h2 class="fw-bold">{{ emb.tipo }}</h2>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <svg class="bi me-2" width="1em" height="1em">
+                                <use xlink:href="#calendar3"></use>
+                            </svg>
+                            <p class="">{{ emb.capacidade_maxima_bolas }} Bolas</p>
+                        </li>
+                    </ul>
+                </div>
 
-	{% include "sabores.html" %}
+            </div>
 
-	{% endfor %} 
- 
-</div> 
+        </a>
+    </div>
+
+    {% include "sabores.html" %}
+
+    {% endfor %} 
+
+</div>   
 {% endblock %}
+
 {% block scripts %}
 	<script>
 		$(document).ready(function(){

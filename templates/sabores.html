@@ -1,22 +1,24 @@
+{% load static %}
 <!-- Modal -->
 <div class="modal fade" id="sabores_{{emb.id}}" data-modalid="{{emb.id}}" tabindex="-1" aria-labelledby="sabores_label" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable">
 	  <div class="modal-content">
+
 		<div class="modal-header">
 		  <h1 class="modal-title fs-5" id="sabores_Label"></h1>
 		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div> 
 		
-		<div>
-			<img class="img-fluid" width="180" src="https://static1.minhavida.com.br/articles/cd/34/02/f6/essa-e-a-razao-pela-qual-voce-nao-deve-guardar-alimentos-no-pote-de-sorvete-orig-1.jpg" alt="">
-			<h3>Pote de Sorvete {{emb.tipo}}</h3>
+		<div class="mt-3">
+			<img class="img-fluid" width="180" src="{% static 'images/sorvete_image.png' %}" alt="">
+			<h3 class="h3 fw-bold mt-3">Pote de Sorvete {{emb.tipo}}</h3>
 			<p>Você pode escolher {{emb.capacidade_maxima_bolas}} sabores e coberturas</p>  
 		</div>
 		
 		<div class="d-flex justify-content-end align-items-center p-3">
 			<span class="fs-4 fw-bold"> <span id="resultselsabor_{{emb.id}}">0</span> / {{emb.capacidade_maxima_bolas}}
 			<span class="badge bg-secondary" id="impResponse{{emb.id}}">Obrigatório</span></span>
- 		</div> 
+ 		</div>
 
 		<div class="modal-body"> 
  			<!-- lista de sabores -->
@@ -52,29 +54,29 @@
 			</div>
 			<div class="qty" >
 				<span class="minus bg-dark">-</span>
-				<input type="number" class="dsb selcobertura_{{emb.id}}" data-coberturaid="{{c.id}}" 
-					id="selcobertura_{{emb.id}}" name="selcobertura_{{emb.id}}" value="0" disabled>					
+				<input type="number" class="dsb selcobertura_{{emb.id}}" data-coberturaid="{{c.id}}" id="selcobertura_{{emb.id}}" name="selcobertura_{{emb.id}}" value="0" disabled>					
 				<span class="plus bg-dark">+</span>
 			</div>
 		</div>
 		{% endfor %}   
 
  		</div>  
-		 <div class="modal-footer"> 
+		 	<div class="modal-footer justify-content-between">
 
-			<div class="qty" >
-				<span class="minus item_minus bg-dark">-</span>
-				<input type="number" class="qtdPote_{{emb.id}}" id="qtdPote_{{emb.id}}" name="qtdPote_{{emb.id}}" value="1" disabled>					
-				<span class="plus item_plus bg-dark">+</span>
+				<div class="qty" >
+					<span class="minus item_minus bg-dark">-</span>
+					<input type="number" class="qtdPote_{{emb.id}}" id="qtdPote_{{emb.id}}" name="qtdPote_{{emb.id}}" value="1" disabled>					
+					<span class="plus item_plus bg-dark">+</span>
+				</div>
+
+				{% if request.user.is_authenticated %}
+				<button type="button" class="btn btn-primary btn-lg btnEnviarSacola">Adicionar</button> 
+				{% else %} 
+				<a class="btn btn-dark btn-lg" href="/admin/login">Faça o Login</a>
+				{% endif %}
+
 			</div>
-
-			{% if request.user.is_authenticated %}
-			<button type="button" class="btn btn-primary btn-lg btnEnviarSacola">Adicionar</button> 
-			{% else %} 
-			<a class="btn btn-dark btn-lg" href="/admin/login">Faça o Login</a>
-			{% endif %}
-
-		</div>
 	  </div>
+
 	</div>
   </div>

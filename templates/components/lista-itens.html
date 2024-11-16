@@ -2,26 +2,45 @@
 <ul class="list-group mb-3">  
     <!-- Lista de Itens do Carrinho --> 
     {% for item in sacola_itens.potes.all %}
-    <li class="list-group-item d-flex align-items-center 
-        justify-content-between lh-sm pote-item" data-poteid="{{item.id}}">
+    <li class="list-group-item d-flex align-items-center justify-content-between lh-sm pote-item" data-poteid="{{ item.id }}">
         <div class="text-start list-item">
-            <h6 class="my-0 text-dark fw-bold">Pote {{item.embalagem.tipo}} - R$ {{item.preco_total}} </h6>
-            <p class="my-0">Sabores: {{item.obter_descricao_sabores}}</p>
-            <p class="my-0">Coberturas: {{item.obter_descricao_coberturas|default:"Não"}}</p>				</div>  
-        <div class="qty">
-            <span class="minus sacola_minus bg-dark">-</span>
-            <input type="number" class="dsb countCartItem_{{item.id}}" id="countCartItem_{{item.id}}" 
-                name="countCartItem" value="{{item.quantidade}}"> 
-            <span class="plus sacola_plus bg-dark">+</span>
+            <h6 class="my-0 text-dark fw-bold">Pote {{ item.embalagem.tipo }} - R$ {{ item.preco_total }}</h6>
+            <p class="my-0 text-muted">Sabores: {{ item.obter_descricao_sabores }}</p>
+            <p class="my-0 text-muted">Coberturas: {{ item.obter_descricao_coberturas|default:"Não" }}</p>				
+        </div>  
+
+        <div class="qty d-flex align-items-center">
+            <button class="btn btn-outline-dark btn-sm sacola_minus me-2" aria-label="Diminuir quantidade">
+                <i class="fas fa-minus"></i>
+            </button>
+            <input type="number" class="form-control form-control-sm text-center countCartItem_{{ item.id }}" 
+                id="countCartItem_{{ item.id }}" name="countCartItem" value="{{ item.quantidade }}" style="width: 60px;">
+            <button class="btn btn-outline-dark btn-sm sacola_plus ms-2" aria-label="Aumentar quantidade">
+                <i class="fas fa-plus"></i>
+            </button>
         </div> 
-        <div class="div">
-            <a href="#" class="link-danger remove-item"> <i class="fas fa-trash"></i></a>
+
+        <div>
+            <a href="#" class="link-danger remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover este item">
+                <i class="fas fa-trash fa-2x"></i>
+            </a>
         </div>
     </li>
     {% endfor %} 
-    <li class="list-group-item d-flex align-items-center 
-        justify-content-between p-3 text-success">
-        <span>Total (R$)</span>
-        <h2><strong id="atualizaValor">R$ {{sacola_itens.preco}}</strong></h2>
+
+    <!-- Total -->
+    <li class="list-group-item d-flex align-items-center justify-content-between p-3 bg-light">
+        <span class="text-dark fw-bold">Total (R$)</span>
+        <h2 class="text-success"><strong id="atualizaValor">R$ {{ sacola_itens.preco }}</strong></h2>
     </li>
-</ul>   
+</ul>  
+
+<!-- Ative os tooltips do Bootstrap -->
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script> -->

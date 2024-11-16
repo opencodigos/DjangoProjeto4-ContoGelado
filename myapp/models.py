@@ -186,9 +186,8 @@ class SacolaItens(models.Model):
 class Pedido(models.Model):
     data_pedido = models.DateTimeField(auto_now_add=True, null=True)
     user = models.ForeignKey(User, related_name='pedido_user', on_delete=models.PROTECT)
-    itens_da_sacola = models.OneToOneField(
-        SacolaItens, on_delete=models.CASCADE, null=True)    
-    status = models.BooleanField()
+    itens_da_sacola = models.OneToOneField(SacolaItens, on_delete=models.CASCADE, null=True)    
+    status = models.BooleanField() # Pedido está ativo na sacola ou não.
     pago = models.BooleanField()  
     entrega = models.BooleanField(default=False)
     endereco = models.TextField(null=True) 

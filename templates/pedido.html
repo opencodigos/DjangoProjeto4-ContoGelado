@@ -1,30 +1,45 @@
 {% extends 'base.html' %}
-{% block title %}Checkout Pedido{% endblock %}
-{% block content %} 
+{% block title %}Checkout do Pedido{% endblock %}
+{% block content %}
 
-<h2 class="pb-2 border-bottom">Meu Pedido: <span class="text-success fs-bold">N° {{pedido.id}}</span></h2>
+<div class="container mt-5">
+    <h2 class="pb-3 border-bottom text-center">
+        Meu Pedido: <span class="text-success fw-bold">N° {{ pedido.id }}</span>
+    </h2>
+    <p class="text-center text-muted">
+        Revise seu pedido para finalizá-lo. Após finalizar, o WhatsApp será aberto para confirmação de pagamento.
+    </p>
 
-<p>Revise seu pedido para finaliza-lo. Ao finalizar vamos abrir o whatsapp para confirmação de pagamento.</p>
+    <div class="row mt-4">
+        <!-- Formulário de Endereço -->
+        <div class="col-md-6">
+            <form method="post" action="{% if total_itens > 0 %}{% url 'checkout_pedido' %}{% endif %}" class="p-4 border rounded shadow-sm">
+                {% csrf_token %}
+                <h4 class="mb-4 text-primary">Endereço de Entrega</h4>
+                
+                <div class="mb-3">
+                    <label for="cep" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="cep" name="cep" maxlength="8" placeholder="123456789" required>
+                </div>
+                <div class="mb-3">
+                    <label for="numero_casa" class="form-label">Número da Casa</label>
+                    <input type="text" class="form-control" id="numero_casa" name="numero_casa" maxlength="8" placeholder="190" required>
+                </div>
 
-<div class="d-flex">  
-    
-	<form class="p-2 flex-fill" method="post" 
-        action="{% if total_itens > 0 %}{% url 'checkout_pedido' %}{% endif %}">
-        {% csrf_token %}
-        <h4 class="mb-3 text-primary">Endereço de Entrega</h4> 
-        <div class="d-flex gap-2">
-            <input type="text" class="form-control form-control-sm" id="cep" name="cep" maxlength="8" placeholder="CEP: 00000-000">
-            <input type="text" class="form-control form-control-sm" id="numero_casa" name="numero_casa" maxlength="8" placeholder="Número Casa">
+                {{ form }}
+
+                <button type="submit" class="btn btn-success w-100 mt-4">Finalizar Pedido</button>
+            </form>
         </div>
-        {{form}}
-        <button type="submit" class="btn btn-success mt-3">Finalizar Pedido</button>
-    </form>
 
-    <div class="p-2 flex-fill">
-			
         <!-- Lista de Itens -->
-        {% include 'components/lista-itens.html' %}
-        
-    </div> 
+        <div class="col-md-6">
+            <div class="p-4 border rounded shadow-sm bg-light">
+                <h4 class="mb-4 text-primary">Itens do Pedido</h4>
+                {% include 'components/lista-itens.html' %}
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

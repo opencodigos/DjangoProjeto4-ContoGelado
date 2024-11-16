@@ -1,15 +1,24 @@
 {% load static %}
 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between pb-3 mb-4">
+    
     <a href="{% url 'inicio' %}" class="link-dark text-decoration-none text-center">
-        <img src="https://via.placeholder.com/200" alt="" width="100">
-        <h2>Conto Gelado</h2>
+        <img src="{% static 'images/logo_sorvete.png' %}" alt="" width="100">
+        <h2 class="fw-bold">Conto Gelado</h2>
     </a>
 
-    <nav class="d-inline-flex align-items-center mt-2 mt-md-0 ms-md-auto">
+    <nav class="d-inline-flex gap-2 align-items-center mt-2 mt-md-0 ms-md-auto">
     
-        <a class="me-3 py-2 link-dark text-decoration-none" href="{% url 'inicio' %}">Inicio</a>
-        <a class="me-3 py-2 link-dark text-decoration-none" href="#">Contato</a>
-        <a class="me-3 py-2 link-dark text-decoration-none" href="{% url 'cardapio' %}">Cardápio</a>
+        <a class="me-3 py-2 link-dark text-decoration-none" href="{% url 'inicio' %}">
+            <i class="fas fa-home me-2"></i> Inicio
+        </a>
+        
+        <a class="me-3 py-2 link-dark text-decoration-none" href="#">
+            <i class="fas fa-envelope me-2"></i> Contato
+        </a>
+        
+        <a class="me-3 py-2 link-dark text-decoration-none" href="{% url 'cardapio' %}">
+            <i class="fas fa-ice-cream me-2"></i> Cardápio
+        </a>  
 
         {% if request.user.is_superuser %}
         <a class="me-3 py-2 link-dark text-decoration-none 
@@ -21,26 +30,23 @@
 
         <!-- Meus Pedidos -->
         <div class="link-dark dropdown">
-            <a class="nav-link link-dark dropdown-toggle {% if request.path == '/meus-pedidos/' %}active{% endif %}"
-                data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+            <a class="nav-link link-dark dropdown-toggle {% if request.path == '/meus-pedidos/' %}active{% endif %}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                 <i class="fas fa-user"></i>  {{request.user.first_name}} {{request.user.last_name}}</a>
             <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a href="{% url 'meus_pedidos' %}" 
-                    class="dropdown-item rounded-2 {% if request.path == '/meus-pedidos/' %}active{% endif %}">Meus Pedidos</a></li> 
+                <li><a href="{% url 'meus_pedidos' %}" class="dropdown-item rounded-2 {% if request.path == '/meus-pedidos/' %}active{% endif %}">Meus Pedidos</a></li> 
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item rounded-2" href="/admin/logout">Sair</a></li>
             </ul>
         </div>  
 
         <!-- Carrinho -->
-        <button class="btn btn-transparent position-relative" type="button"
-                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" 
-                aria-controls="offcanvasRight">
+        <button class="btn btn-transparent position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"  aria-controls="offcanvasRight">
             <i class="fas fa-shopping-cart fa-2x"></i>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {{total_itens}}+ 
             </span>
         </button>
+
         {% include 'sacola.html' %}  
 
         {% else %}
