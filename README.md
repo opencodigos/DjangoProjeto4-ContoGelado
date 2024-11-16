@@ -49,4 +49,4 @@ A interface foi construída com templates Django utilizando Ajax para enviar os 
 
 ▶️ PLaylist do Projeto: [Playlist com Vídeos Tutoriais](https://www.youtube.com/playlist?list=PL2bJNatYYfGRxFSP1aEUNqaR_ZTqrDO_h)
 
-📂 Repositório inicial: [ContoGelado](https://github.com/opencodigos/DjangoProjeto4-ContoGelado/tree/projeto_final)
+📂 Repositório Final: [ContoGelado](https://github.com/opencodigos/DjangoProjeto4-ContoGelado/tree/projeto_final)
