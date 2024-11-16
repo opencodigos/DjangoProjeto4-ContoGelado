@@ -41,6 +41,4 @@ Antes de iniciar o projeto, certifique-se de que os seguintes itens estão insta
 
 A interface foi construída com templates Django utilizando Ajax para enviar os dados do pedido sem a necessidade de recarregar a página.
 
-## 🔗 Repositório do Projeto
-
 **Vídeo de configuração do projeto:** [Assistir no YouTube](https://www.youtube.com/watch?v=tr3RkGkbEU4)
