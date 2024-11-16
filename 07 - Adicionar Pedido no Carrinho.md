@@ -1,6 +1,4 @@
-##Adicionar Pedido no Carrinho
-
-Agora vamos adicionar pedido no carrinho quantos o usuário selecionar.
+## Agora vamos adicionar pedido no carrinho quantos o usuário selecionar.
 
 Como vocês podem perceber o catálogo é open para qualquer usuário ver. Até os que não estão autenticados. Mas para adicionar no carrinho vamos obrigar o usuário está logado, fazendo a validação e redirecionamento.
 
@@ -25,10 +23,10 @@ Tendo essas informações passamos para views e fica mais facil de fazer o trata
 
 ```html
 var dados = {
-    'embalagem_id': modalId,
-    'sabores_selecionados': saboresSelecionados,
-    'cobertura_selecionadas': coberturaSelecionadas,
-    'quantidade_pote': quantidade_pote
+	'embalagem_id': modalId,
+	'sabores_selecionados': saboresSelecionados,
+	'cobertura_selecionadas': coberturaSelecionadas,
+	'quantidade_pote': quantidade_pote
 };
 ```
 
@@ -47,7 +45,7 @@ def adicionar_sacola(request):
             dados = json.loads(dados_str) 
             print(dados) 
             return JsonResponse({'status': 'success', 
-                                    'message': 'Item adicionado na sacola com sucesso.'})
+                                 'message': 'Item adicionado na sacola com sucesso.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
     return JsonResponse({'status': 'error', 'message': 'Requisição inválida.'})
@@ -59,7 +57,7 @@ Para evento de click criei uma class auxiliar no template sabores.html
 
 ```html
 <button type="button" class="btn btn-primary btn-lg btnEnviarSacola">
-    Adicionar</button>
+	Adicionar</button>
 ```
 
 cardapio.html
@@ -67,23 +65,23 @@ cardapio.html
 ```html
 // Coleta itens para sacola.
 $('.btnEnviarSacola').click(function () {
-    // Obter o modalId do atributo data-modalid
-    var modalId = $(this).closest('.modal').data('modalid');
-        
-    var saboresSelecionados = atualizarTotalSelecionado(modalId);
+	// Obter o modalId do atributo data-modalid
+	var modalId = $(this).closest('.modal').data('modalid');
+	 
+	var saboresSelecionados = atualizarTotalSelecionado(modalId);
 
-    var coberturaSelecionadas = selCobertura(modalId);
+	var coberturaSelecionadas = selCobertura(modalId);
 
-    var quantidade_pote = parseInt($('.qtdPote_' + modalId).val()) || 1;
+	var quantidade_pote = parseInt($('.qtdPote_' + modalId).val()) || 1;
 
-    var dados = {
-        'embalagem_id': modalId,
-        'sabores_selecionados': saboresSelecionados,
-        'cobertura_selecionadas': coberturaSelecionadas,
-        'quantidade_pote': quantidade_pote
-    };
-    console.log(dados);
-        
+	var dados = {
+		'embalagem_id': modalId,
+		'sabores_selecionados': saboresSelecionados,
+		'cobertura_selecionadas': coberturaSelecionadas,
+		'quantidade_pote': quantidade_pote
+	};
+	console.log(dados);
+	 
 });
 ```
 
@@ -91,27 +89,27 @@ $('.btnEnviarSacola').click(function () {
 
 ```html
 function atualizarTotalSelecionado(modalId) {
-    var totalSelecionado = 0;
-    var saboresSelecionados = [];
+	var totalSelecionado = 0;
+	var saboresSelecionados = [];
 
-    $('.count_'+modalId).each(function() {
-        totalSelecionado += parseInt($(this).val());
-        
-        var saborId = $(this).data('saborid');
-        var quantidade = parseInt($(this).val());
-        
-        if (quantidade > 0) {
-            saboresSelecionados.push({
-                'sabor_id': saborId,
-                'quantidade': quantidade
-            });
-        } 
+	$('.count_'+modalId).each(function() {
+		totalSelecionado += parseInt($(this).val());
+		
+		var saborId = $(this).data('saborid');
+		var quantidade = parseInt($(this).val());
+		
+		if (quantidade > 0) {
+			saboresSelecionados.push({
+				'sabor_id': saborId,
+				'quantidade': quantidade
+			});
+		} 
 
-    });
-    $('#resultselsabor_' + modalId).text(totalSelecionado);
-    
-    console.log(saboresSelecionados);
-    return saboresSelecionados;
+	});
+	$('#resultselsabor_' + modalId).text(totalSelecionado);
+	
+	console.log(saboresSelecionados);
+	return saboresSelecionados;
 }
 ```
 
@@ -119,19 +117,19 @@ function atualizarTotalSelecionado(modalId) {
 
 ```html
 function selCobertura(modalId) {
-    var selCobertura= [];
-    $('.selcobertura_' + modalId).each(function () {
-        var coberturaid = $(this).data('coberturaid');
-        var quantidade = parseInt($(this).val());
-        if (quantidade > 0) {
-            selCobertura.push({
-                'cobertura_id': coberturaid,
-                'quantidade': quantidade
-            });
-        }
-    });
-    console.log(selCobertura);
-    return selCobertura;
+	var selCobertura= [];
+	$('.selcobertura_' + modalId).each(function () {
+		var coberturaid = $(this).data('coberturaid');
+		var quantidade = parseInt($(this).val());
+		if (quantidade > 0) {
+			selCobertura.push({
+				'cobertura_id': coberturaid,
+				'quantidade': quantidade
+			});
+		}
+	});
+	console.log(selCobertura);
+	return selCobertura;
 }
 ```
 
@@ -140,12 +138,12 @@ Atualiza no evento de click para selecionar coberturas.
 ```html
 // Coberturas/Adicionais 
 $(document).on('click', '.plus', function(){ 
-    ...
-    selCobertura(modalId)
+	...
+	selCobertura(modalId)
 });
 $(document).on('click', '.minus', function(){
-    ...
-    selCobertura(modalId)
+	...
+	selCobertura(modalId)
 });
 ```
 
@@ -153,21 +151,21 @@ Certo, Agora vamos passar esses dados para view utilizando Ajax.
 
 ```python
 // Faça uma solicitação AJAX para a view Django
-    $.ajax({
-        type: 'POST',
-        url: "{% url 'adicionar_sacola' %}",  // Substitua pela URL correta
-        data: {
-            'dados': JSON.stringify(dados),
-            'csrfmiddlewaretoken': '{{ csrf_token }}'  // Token CSRF
-        },
-        dataType: 'json', 
-        success: function (response) {
-            console.log(response);
-        },
-        error: function (xhr, status, error) {
-            console.error('Erro na solicitação AJAX:', error);
-        }
-    }); 
+	$.ajax({
+		type: 'POST',
+		url: "{% url 'adicionar_sacola' %}",  // Substitua pela URL correta
+		data: {
+			'dados': JSON.stringify(dados),
+			'csrfmiddlewaretoken': '{{ csrf_token }}'  // Token CSRF
+		},
+		dataType: 'json', 
+		success: function (response) {
+			console.log(response);
+		},
+		error: function (xhr, status, error) {
+			console.error('Erro na solicitação AJAX:', error);
+		}
+	}); 
 ```
 
 Com os dados da requisição em nossa views vamos começar o tratamento. Primeiro vamos obter o carrinho existente do usuário, se carrinho não existir vamos precisar criar. O carrinho só não vai exitir quando é a primeira vez que usuário adiciona o item. Depois vamos criar Pote, adicionar sabores e cobertura conforme codigo abaixo.
@@ -183,7 +181,7 @@ pedido = Pedido.objects.filter(user=request.user, status=True).first()
 if not pedido: 
     # Crie um novo pedido e associe a sacola criada
     pedido = Pedido.objects.create(user=request.user, 
-                                    itens_da_sacola=SacolaItens.objects.create())
+                                   itens_da_sacola=SacolaItens.objects.create())
 
 monta_pote = MontaPote.objects.create(
     embalagem_id=embalagem_id, quantidade=quantidade_pote)
@@ -208,11 +206,11 @@ models.py
 ```python
 class SelCobertura(models.Model):
     pote = models.ForeignKey(MontaPote, 
-                                related_name='pote_cobertura', 
-                                on_delete=models.CASCADE, null=True) 
+                             related_name='pote_cobertura', 
+                             on_delete=models.CASCADE, null=True) 
     cobertura = models.ForeignKey(Cobertura,
-                                    related_name='cobertura', 
-                                    on_delete=models.CASCADE, null=True)
+                                  related_name='cobertura', 
+                                  on_delete=models.CASCADE, null=True)
     quantidade_cobertura = models.PositiveIntegerField()
     
     def __str__(self):
@@ -228,8 +226,8 @@ Atualiza o contador do preço do pote para contar todas as coberturas
 ```python
 class MontaPote(models.Model):
     embalagem = models.ForeignKey(Embalagem, 
-                                    related_name='embalagem', 
-                                    on_delete=models.CASCADE, null=True)
+                                  related_name='embalagem', 
+                                  on_delete=models.CASCADE, null=True)
     # coberturas = models.ManyToManyField(Cobertura)
     quantidade = models.PositiveIntegerField(null=True) 
 
@@ -246,7 +244,7 @@ class MontaPote(models.Model):
             preco_cobertura = selcobertura.cobertura.preco
             quantidade_cobertura = selcobertura.quantidade_cobertura
             preco_coberturas += preco_cobertura * quantidade_cobertura
-                        ...
+						...
 ```
 
 Rodamos: `python manage.py makemigrations && python manage.py migrate`
@@ -318,16 +316,16 @@ No template sacola.html
 
 ```html
 <ul class="list-group mb-3">
-    <!-- Lista de Itens do Carrinho -->
-    {% for item in sacola_itens.potes.all %} 
-    {{item}}
-    {% endfor %}
-    
-    <li class="list-group-item d-flex align-items-center 
-        justify-content-between p-3 text-success">
-        <span>Total (R$)</span>
-        <h2><strong id="atualizaValor">R$ {{sacola_itens.preco}}</strong></h2>
-    </li>
+	<!-- Lista de Itens do Carrinho -->
+	{% for item in sacola_itens.potes.all %} 
+	{{item}}
+	{% endfor %}
+	
+	<li class="list-group-item d-flex align-items-center 
+		justify-content-between p-3 text-success">
+		<span>Total (R$)</span>
+		<h2><strong id="atualizaValor">R$ {{sacola_itens.preco}}</strong></h2>
+	</li>
 </ul>  
 
 ```
@@ -338,20 +336,20 @@ Aplicando as class do bootstrap.
 <!-- Lista de Itens do Carrinho -->
 {% for item in sacola_itens.potes.all %}
 <li class="list-group-item d-flex align-items-center justify-content-between lh-sm">
-    <div class="text-start list-item">
-        <h6 class="my-0 text-dark fw-bold">Pote {{item.embalagem.tipo}} - R$ {{item.preco_total}} </h6>
-        <p class="my-0">Sabores: </p>
-        <p class="my-0">Coberturas: </p>
-    </div>  
-    <div class="qty">
-        <span class="minus bg-dark">-</span>
-        <input type="number" class="dsb countCartItem" id="countCartItem" 
-            name="countCartItem" value="{{item.quantidade}}"> 
-        <span class="plus bg-dark">+</span>
-    </div> 
-    <div class="div">
-        <a href="#" class="link-danger"> <i class="fas fa-trash"></i></a>
-    </div>
+	<div class="text-start list-item">
+		<h6 class="my-0 text-dark fw-bold">Pote {{item.embalagem.tipo}} - R$ {{item.preco_total}} </h6>
+		<p class="my-0">Sabores: </p>
+		<p class="my-0">Coberturas: </p>
+	</div>  
+	<div class="qty">
+		<span class="minus bg-dark">-</span>
+		<input type="number" class="dsb countCartItem" id="countCartItem" 
+			name="countCartItem" value="{{item.quantidade}}"> 
+		<span class="plus bg-dark">+</span>
+	</div> 
+	<div class="div">
+		<a href="#" class="link-danger"> <i class="fas fa-trash"></i></a>
+	</div>
 </li>
 {% endfor %}
 ```
@@ -374,12 +372,12 @@ def obter_descricao_sabores(self):
 
 ```python
 def obter_descricao_coberturas(self):
-    descricao_coberturas = []
-    for sel_cobertura in self.pote_cobertura.all():
-        quantidade_cobertura = sel_cobertura.quantidade_cobertura
-        descricao_cobertura = f"{quantidade_cobertura}x {sel_cobertura.cobertura.nome}"
-        descricao_coberturas.append(descricao_cobertura)
-    return ";".join(descricao_coberturas)
+  descricao_coberturas = []
+  for sel_cobertura in self.pote_cobertura.all():
+      quantidade_cobertura = sel_cobertura.quantidade_cobertura
+      descricao_cobertura = f"{quantidade_cobertura}x {sel_cobertura.cobertura.nome}"
+      descricao_coberturas.append(descricao_cobertura)
+  return ";".join(descricao_coberturas)
 ```
 
 ```python
@@ -416,13 +414,13 @@ cardapio.html
 
 ```python
 success: function (response) {
-    // Handle a resposta da view aqui
-    if (response.status === 'success') {
-        console.log('Itens adicionados à sacola com sucesso!');
-        location.reload();
-    } else {
-        console.error('Erro ao adicionar itens à sacola:', response.message);
-    }
+	// Handle a resposta da view aqui
+	if (response.status === 'success') {
+		console.log('Itens adicionados à sacola com sucesso!');
+	 	location.reload();
+	} else {
+		console.error('Erro ao adicionar itens à sacola:', response.message);
+	}
 },
 ```
 
@@ -430,7 +428,7 @@ Depois como vcs podem ver o contador do item fica open para usuario digitar. Vam
 
 ```python
 $(document).ready(function(){
-            $('.dsb').prop('disabled', true);
+			$('.dsb').prop('disabled', true);
 ```
 
 ```python
@@ -445,20 +443,20 @@ primeiro vamos dar nomes aos boi. Coloquei uma class pote-item para ter acesso a
 
 ```python
 <!-- Lista de Itens do Carrinho -->
-            {% for item in sacola_itens.potes.all %}
-            <li class="list-group-item d-flex align-items-center 
-                justify-content-between lh-sm pote-item" data-poteid="{{item.id}}">
+			{% for item in sacola_itens.potes.all %}
+			<li class="list-group-item d-flex align-items-center 
+				justify-content-between lh-sm pote-item" data-poteid="{{item.id}}">
 ```
 
 Depois, Vamos precisar fazer algumas modificações nessa parte do template para ter acesso a cada valor individualmente. 
 
 ```python
 <div class="qty">
-    <span class="minus sacola_minus bg-dark">-</span>
-    <input type="number" class="dsb countCartItem_{{item.id}}" 
-        id="countCartItem_{{item.id}}" 
-        name="countCartItem_{{item.id}}" value="{{item.quantidade}}" disabled> 
-    <span class="plus sacola_plus bg-dark">+</span> 
+	<span class="minus sacola_minus bg-dark">-</span>
+	<input type="number" class="dsb countCartItem_{{item.id}}" 
+		id="countCartItem_{{item.id}}" 
+		name="countCartItem_{{item.id}}" value="{{item.quantidade}}" disabled> 
+	<span class="plus sacola_plus bg-dark">+</span> 
 </div> 
 ```
 
@@ -476,7 +474,7 @@ $(document).ready(function() {
         // Obtem o Identificador do Pote
         // closest procra o ancestral mais próximo subindo na hierarquia do DOM a partir do elemento atual
         var poteId = $(this).closest('.pote-item').data('poteid');
-    
+   
         // Use .siblings() para encontrar o elemento irmão do botão clicado
         var inputCountPote = $(this).siblings('input.countCartItem_'+poteId); 
     
@@ -495,7 +493,7 @@ $(document).ready(function() {
         console.log("Quantidade Atual:", currentValue);
     
     });
-    
+ 
 })
 ```
 
@@ -507,7 +505,7 @@ views.py
 @login_required(login_url="/admin/login/")
 def atualiza_quantidade_sacola(request):
     if request.method == 'POST':
-                pedido = Pedido.objects.filter(user=request.user, status=True).first()        
+				pedido = Pedido.objects.filter(user=request.user, status=True).first()        
         
         pote_id = request.POST.get('poteId', None)
         novaQuantidade = request.POST.get('novaQuantidade', None)
@@ -647,7 +645,7 @@ sacola.html
 
 ```python
 <div class="div">
-    <a href="#" class="link-danger remove-item"> <i class="fas fa-trash"></i></a>
+	<a href="#" class="link-danger remove-item"> <i class="fas fa-trash"></i></a>
 </div>
 ```
 
@@ -678,7 +676,7 @@ def remove_item_sacola(request):
             'message': 'Item removido com sucesso',
             'novo_valor': f'R$ {pedido.itens_da_sacola.preco_total()}' 
         }
-            
+         
         return JsonResponse(response)
     else:
         # Se a requisição não for do tipo POST, você pode retornar um erro ou outra resposta apropriada

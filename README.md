@@ -1,55 +1,46 @@
-## Conto Gelado
-Sistema simples de Sorveteria que envia mensagem para WhatsApp. 
+# 🍦 Sistema de Sorveteria com Envio de Mensagens para WhatsApp
 
-Para envio de mensagem como vocês viram na previa vamos utilizar a biblioteca pywhatkit que é simples e muito eficiente. E vai atender nossas necessidades sem precisar de serviços pagos.
+## 📝 Descrição do Projeto
 
-main.py
+Este é um sistema simples de gerenciamento de sorveteria desenvolvido com Django, que permite ao usuário fazer pedidos de sorvetes e enviar as informações diretamente para o WhatsApp. O sistema oferece funcionalidades de cadastro de sabores, pedidos e integração com a API do WhatsApp para comunicação direta.
 
-```jsx
-import pywhatkit as kit
+## ⚙️ Funcionalidades
 
-# Número de telefone com código de país (por exemplo, +55 para BRA)
-numero = '+5516994256485'
-mensagem = '''\
-Açaí na Tigela 400g
-Sabor: Açaí Tradicional
+- **Cadastro de Sabores**:
+    - Possibilidade de adicionar, editar e excluir sabores de sorvete.
+- **Pedidos**:
+    - Os clientes podem selecionar os sabores desejados e realizar um pedido.
+    - Geração de mensagem automática para WhatsApp com as informações do pedido.
+- **Envio de Mensagens para WhatsApp**:
+    - Após o pedido, o sistema envia os detalhes do pedido para um número de WhatsApp pré-configurado.
+- **Integração com API do WhatsApp**:
+    - Utilização de uma API para enviar a mensagem diretamente para o WhatsApp. (pywhatkit)
 
-Adicionais:
-- 1x Creme de Ninho
-- 1x Leite Ninho
-- 1x Morango
+## 🛠️ Tecnologias Utilizadas
 
-Pote: 1/5 litro
+- **Backend**: Python, Django
+- **Banco de Dados**: SQLite3 (ou outro banco de dados configurado)
+- **Frontend**: HTML, CSS, JavaScript, Ajax
+- **API do WhatsApp**: API para envio de mensagens (pywhatkit)
 
-Sabores:
-- 1x Chocolate Trufado
-- 1x Flocos
-- 1x Laka Cremoso
+## 📋 Pré-requisitos
 
-Adicionais:
-- 1x Creme de Ninho
-- 1x Leite Ninho
-- 1x Morango
+Antes de iniciar o projeto, certifique-se de que os seguintes itens estão instalados:
 
-Total: R$ 45,99
+- Python (python==3.*)
+- Whatsapp (pywhatkit)
+- Pip (gerenciador de pacotes do Python)
 
-Tempo estimado de entrega: 60min
-'''
+## 🌟 Fluxo do Sistema
 
-# Envie a mensagem
-kit.sendwhatmsg_instantly(numero, mensagem)
-```
+- Cadastro de sabores de sorvete.
+- Clientes podem realizar pedidos de sorvetes.
+- Pedido é enviado para o número de WhatsApp configurado.
 
-Nesse tutorial vamos desenvolver um sistema de sorveteria com Django.
+## 🖌️ Frontend
 
-Pode iniciar o projeto pelo repositório abaixo. Ou assistir o video de configuração.
+A interface foi construída com templates Django utilizando Ajax para enviar os dados do pedido sem a necessidade de recarregar a página.
 
-[Default (Completa)](https://www.notion.so/Default-Completa-1209d5cc61154078bc4865cbe145455e?pvs=21) 
+## 🔗 Repositório do Projeto
 
-**Github:**https://github.com/codloom/DjangoProjetoConfiguracao/tree/DjangoProjetoConfiguracaoCompleta
-
-**Vídeo:** https://www.youtube.com/watch?v=tr3RkGkbEU4
-
-Depois de feito as configurações iniciais e executado o projeto. 
-
-Vamos para estrutura do projeto, vou começar pelo Backend. Depois vamos para frontend fazendo as views e tratamento no template. Vou usar Ajax, se preparem.
+**Vídeo de configuração do projeto:** [Assistir no YouTube](https://www.youtube.com/watch?v=tr3RkGkbEU4)

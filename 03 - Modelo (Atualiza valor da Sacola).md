@@ -1,4 +1,10 @@
-Vamos fazer alguns ajustes, depois que colocar itens na Sacola gostaria que informação fosse atualziada no campo “preco” automaticamente. 
+Para garantir que o campo `preco` da `SacolaItens` seja atualizado automaticamente após a inclusão de itens (potes), o método `preco_total()` já está fazendo o cálculo corretamente. No entanto, para uma atualização dinâmica e eficiente do campo `preco` no Django Admin, você pode adicionar alguns ajustes.
+
+1. **Uso do `save()` no método `preco_total()`**: O método já está calculando e atribuindo o valor de `preco`, mas a chamada para `self.save()` deve ser feita com cautela, pois isso pode gerar uma sobrecarga de consultas ao banco de dados. Certifique-se de que a chamada está sendo feita apenas quando necessário.
+
+1. **Admin personalizado**: Para que o valor de `preco` seja atualizado dinamicamente no Django Admin sempre que os potes forem alterados ou adicionados, use a função `save()` no modelo `SacolaItens` para recalcular o preço sempre que necessário.
+
+### Modelo `MontaPote`
 
 ```python
 # Monta o Pote  
@@ -27,6 +33,10 @@ class MontaPote(models.Model):
         verbose_name_plural = 'B - MontaPote'
 ```
 
+### Modelo `SacolaItens`
+
+Aqui está a modificação que ajusta a atualização do campo `preco` ao adicionar ou alterar potes na `SacolaItens`.
+
 ```python
 # Sacolas de Itens
 class SacolaItens(models.Model):
@@ -52,3 +62,31 @@ class SacolaItens(models.Model):
         verbose_name = 'C - SacolaItens'
         verbose_name_plural = 'C - SacolaItens'
 ```
+
+### Ajustes no Django Admin
+
+No Django Admin, se você quiser garantir que o campo `preco` seja recalculado sempre que o item for alterado, você pode usar o método `save_model()` para forçar a atualização do preço ao salvar a instância.
+
+```python
+from django.contrib import admin
+from myapp.models import SacolaItens, MontaPote
+
+@admin.register(SacolaItens)
+class SacolaItensAdmin(admin.ModelAdmin):
+    list_display = ('id', 'preco', 'preco_formatado')
+
+    def save_model(self, request, obj, form, change):
+        # Atualize o campo preco automaticamente antes de salvar
+        obj.preco_total()  # Recalcula o preço total antes de salvar
+        super().save_model(request, obj, form, change)
+
+@admin.register(MontaPote)
+class MontaPoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'embalagem', 'quantidade', 'preco_total')
+
+```
+
+### Como Funciona:
+
+1. **`preco_total()`**: Ao adicionar ou alterar um pote na `SacolaItens`, o método `preco_total()` calcula o total do valor, atualizando o campo `preco` e chamando `self.save()` para garantir que o preço seja salvo no banco de dados.
+2. **Admin**: O método `save_model()` no Django Admin chama `obj.preco_total()` antes de salvar a instância de `SacolaItens`, garantindo que o preço seja recalculado automaticamente.

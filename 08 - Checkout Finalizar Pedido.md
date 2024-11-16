@@ -1,26 +1,34 @@
-##Checkout Finalizar Pedido
+Esse projeto tem como objetivo fornecer uma experiência de checkout simples para os usuários, permitindo a finalização do pedido e a configuração de entrega e pagamento.
 
-Agora vamos implementar um checkout simples para finalizar o pedido.
+## 1. Modificação do Modelo `Pedido`
 
-Primeiro precisamos fazer uma modificação no modelo Pedido.
+Primeiro, precisamos adicionar campos ao modelo `Pedido` para controlar o status de entrega e endereço, além de configurar opções de pagamento:
 
 ```python
-...
-entrega = models.BooleanField(default=False)
-endereco = models.TextField(null=True)
+# models.py
+class Pedido(models.Model):
+    ...
+    entrega = models.BooleanField(default=False)
+    endereco = models.TextField(null=True)
 
-class Pagamento(models.TextChoices):
-    CARTAO = 'CARTAO', 'Cartão'
-    PIX = 'PIX', 'Pix'
-    DINHEIRO = 'DINHEIRO', 'Dinheiro'
-pagamento = models.CharField(max_length=100, choices=Pagamento.choices, null=True)
+    class Pagamento(models.TextChoices):
+        CARTAO = 'CARTAO', 'Cartão'
+        PIX = 'PIX', 'Pix'
+        DINHEIRO = 'DINHEIRO', 'Dinheiro'
+    pagamento = models.CharField(max_length=100, choices=Pagamento.choices, null=True)
+
 ```
 
-`python manage.py makemigrations && python manage.py migrate`
+Depois de alterar o modelo, execute as migrações:
 
-Depois disso no Pedido temos alguns campos auxiliares.
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-forms.py
+## 2. Formulário de Pedido
+
+Em `forms.py`, criamos o formulário para atualizar os dados do pedido:
 
 ```python
 from django import forms
@@ -45,7 +53,9 @@ class PedidoUpdateForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control form-control-sm'
 ```
 
-views.py
+## 3. View do Checkout
+
+A função `checkout_pedido` é responsável por exibir o formulário de pedido e processar as atualizações:
 
 ```python
 @login_required(login_url="/admin/login/")
@@ -66,11 +76,19 @@ def checkout_pedido(request):
     return render(request, 'pedido.html', {'form': form, 'pedido': pedido})
 ```
 
-`path('checkout-pedido/', views.checkout_pedido, name='checkout_pedido'),`
-
-pedido.html
+E o URL de `checkout_pedido` deve ser configurado da seguinte forma:
 
 ```python
+# urls.py
+path('checkout-pedido/', views.checkout_pedido, name='checkout_pedido'),
+
+```
+
+## 4. Template do Checkout
+
+O template `pedido.html` exibe o formulário para finalizar o pedido e revisar os itens:
+
+```html
 {% extends 'base.html' %}
 {% block title %}Pagina 1{% endblock %}
 {% block content %} 
@@ -101,9 +119,11 @@ pedido.html
 {% endblock %}
 ```
 
-Lista de Item que podemos utilizar é a mesma da sacola.
+## 5. Lista de Itens do Pedido
 
-```python
+Para simplificar, podemos reutilizar a lista de itens do carrinho de compras no checkout. Crie um template único para isso:
+
+```html
     <ul class="list-group mb-3">
         <!-- Lista de Itens do Carrinho --> 
         {% for item in sacola_itens.potes.all %}
@@ -132,18 +152,18 @@ Lista de Item que podemos utilizar é a mesma da sacola.
 </ul>
 ```
 
-sacola podemos adicionar chamada
+### Sacola podemos adicionar chamada
 
-```python
+```
 <button type="button" class="btn btn-success btn-lg">
     <a href="{% if total_itens > 0 %}{% url 'checkout_pedido' %}{% endif %}" class="link-light text-decoration-none">
         Ir para checkout</a>
-</button> 
+</button>
 ```
 
-navbar.html
+`navbar.html`
 
-```python
+```jsx
 {% if request.path|slice:":18" == '/checkout-pedido/' %}
 <div class="d-flex justify-content-between align-items-center">
     <a class="link-dark text-decoration-none" href="{% url 'inicio' %}"><i class="fas fa-arrow-left fa-2x"></i></a>
@@ -157,11 +177,11 @@ navbar.html
 {% endif %}
 ```
 
-Agora vamos configurar uma api para buscar o CEP.
+## 6. API para Buscar o CEP
 
-utilizar essa api: [`https://viacep.com.br/ws/](https://viacep.com.br/ws/)' + cep + '/json/`
+Utilize a API [ViaCEP](https://viacep.com.br/ws/) para buscar o endereço com base no CEP digitado:
 
-```python
+```jsx
 // Pagina Finalizar Pedido
     $("#cep").on('keyup', function () {
         var cep = $(this).val().replace(/\D/g, '');
@@ -196,9 +216,9 @@ utilizar essa api: [`https://viacep.com.br/ws/](https://viacep.com.br/ws/)' + ce
     });
 ```
 
-Como podem perceber o numero nao vem, então precisamos adicionar 
+Como podem perceber o numero nao vem, então precisamos adicionar
 
-```python
+```jsx
 $("#numero_casa").on('blur', function () {
     var numero_casa = $(this).val().replace(/\D/g, '');
     var cep = $("#id_endereco").val();
@@ -208,15 +228,15 @@ $("#numero_casa").on('blur', function () {
 });
 ```
 
-Melhora. 
+## Melhora
 
-Como vcs podem ver estamos utilizando a mesma lista de itens que tem na sacola certo ? 
+Como vcs podem ver estamos utilizando a mesma lista de itens que tem na sacola certo ?
 
 Podemos simplificar isso compartilhando template unico.
 
-**lista-itens.html**
+**`lista-itens.html`**
 
-```python
+```jsx
 {% load static %}
 <ul class="list-group mb-3">  
     <!-- Lista de Itens do Carrinho --> 
@@ -248,7 +268,7 @@ Podemos simplificar isso compartilhando template unico.
 
 Faz include dele em sacola.html e pedido.html
 
-```python
+```jsx
 {% include 'components/lista-itens.html' %}
 ```
 

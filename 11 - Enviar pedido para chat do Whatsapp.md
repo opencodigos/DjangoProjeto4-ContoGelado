@@ -1,7 +1,4 @@
-##Enviar pedido para chat do Whatsapp
-
-
-**views.py**
+**`views.py`**
 
 ```python
 import pywhatkit as kit
@@ -41,35 +38,35 @@ def enviar_whatsapp_pedido(request):
 path('enviar-pedido-whatsapp/', views.enviar_whatsapp_pedido, name='enviar_whatsapp_pedido'),
 ```
 
-**meus-pedidos.html**
+**`meus-pedidos.html`**
 
 ```python
 <script>
-    $(document).ready(function() {
-        $('.whatsapp-btn').click(function() {
-            var id = $(this).data('id'); 
-            $.ajax({
-                url: "{% url 'enviar_whatsapp_pedido' %}", // Substitua pela URL correta
-                type: 'POST',
-                data: {
-                    'pedido_id': id,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
-                },
-                success: function(data) { 
-                    // Feche o modal se necessário 
-                    console.log(data)
-                },
-                error: function(error) {
-                    console.log(error);
-                    alert('Erro ao atualizar o pedido.');
-                }
-            });
-        });
+  $(document).ready(function() {
+	  $('.whatsapp-btn').click(function() {
+	      var id = $(this).data('id'); 
+	      $.ajax({
+	          url: "{% url 'enviar_whatsapp_pedido' %}", // Substitua pela URL correta
+	          type: 'POST',
+	          data: {
+	              'pedido_id': id,
+	              'csrfmiddlewaretoken': '{{ csrf_token }}' // Token CSRF
+	          },
+	          success: function(data) { 
+	              // Feche o modal se necessário 
+	              console.log(data)
+	          },
+	          error: function(error) {
+	              console.log(error);
+	              alert('Erro ao atualizar o pedido.');
+	          }
+	      });
+	  });
 });
 </script>
 ```
 
-vamos da uma formatada na mensagem para adicionar os detalhes do nosso pedido
+**vamos da uma formatada na mensagem para adicionar os detalhes do nosso pedido**
 
 ```python
 def format_message(pedido):
@@ -89,5 +86,3 @@ def format_message(pedido):
 ```python
 Detalhes do Pedido:{format_message(pedido)}
 ```
-
-Fim

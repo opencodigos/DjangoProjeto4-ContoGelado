@@ -1,6 +1,4 @@
-##Meus Pedidos / Historico de Pedidos
-
-views.py
+**`views.py`**
 
 ```python
 @login_required(login_url="/admin/login/")
@@ -9,13 +7,13 @@ def meus_pedidos(request):
     return render(request, 'meus-pedidos.html', {'meus_pedidos': meus_pedidos})
 ```
 
-urls.py
+**`urls.py`**
 
 ```python
 path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
 ```
 
-Navbar.html
+**`Navbar.html`**
 
 https://getbootstrap.com/docs/5.3/components/dropdowns/
 
@@ -23,7 +21,7 @@ https://getbootstrap.com/docs/5.3/components/dropdowns/
 <!-- Meus Pedidos -->
 <div class="link-dark dropdown">
     <a class="nav-link link-dark dropdown-toggle {% if request.path == '/meus-pedidos/' %}active{% endif %}"
-            data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+         data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
         <i class="fas fa-user"></i>  {{request.user.first_name}} {{request.user.last_name}}</a>
     <ul class="dropdown-menu dropdown-menu-dark">
         <li><a href="{% url 'meus_pedidos' %}" 
@@ -34,7 +32,7 @@ https://getbootstrap.com/docs/5.3/components/dropdowns/
 </div>  
 ```
 
-meus-pedidos.html
+**`meus-pedidos.html`**
 
 ```python
 {% extends 'base.html' %}
@@ -62,7 +60,7 @@ meus-pedidos.html
 {% block scripts %} {% endblock scripts %}
 ```
 
-Historico de pedidos
+## Historico de pedidos
 
 ```python
 

@@ -1,6 +1,8 @@
-Vamos configurar a lista de recepientes na pagina de cardapio. Para isso na nossa view vamos criar 2 query uma de embalagens e outra de tipo de sabores. O tipo de sabor tem todos os relacionamentos que precisamos para montar o pode completo. Ok.
+## Vamos configurar a lista de recepientes na pagina de cardapio.
 
-*views.py*
+Para isso na nossa view vamos criar 2 query uma de embalagens e outra de tipo de sabores. O tipo de sabor tem todos os relacionamentos que precisamos para montar o pode completo. Ok.
+
+**`*views.py*`**
 
 ```python
 from .models import Embalagem, TipoSabor
@@ -17,7 +19,7 @@ def cardapio(request):
 
 Então no template do cardapio fica assim. primero podemos fazer o for para listar todas as embalagens que cadastramos.
 
-*cardapio.html*
+**`*cardapio.html*`**
 
 ```html
 {% extends 'base.html' %}
@@ -57,7 +59,7 @@ No template de sabores vamos configurar o modal para lista de sabores disponivel
 
 Primeiro é bom entender o conceito de “pai e filho” no modal. Para não acontencer de criar no card e sempre abrir o mesmo modal para todos. Esse tipo de problema é muito comum por isso já estou avisando voces. Para que isso não acontece precisamos dar nomes nos identificadores. exemplo: id="sabores_{{emb.id}}" essa é uma maneira de “linkar” corretamente as chamadas. 
 
-***modal > sabores***
+**`*modal > sabores*`**
 
 ```python
 <!-- Modal -->
@@ -88,9 +90,9 @@ Primeiro é bom entender o conceito de “pai e filho” no modal. Para não aco
   </div>
 ```
 
-  
+## Lista de sabores.
 
-Por fim a lista de sabores. Como temos alguns relacionamento na tabela tipoSabor. Precisamos fazer 2 for para ter todas as informações que precisamos. 
+Como temos alguns relacionamento na tabela tipoSabor. Precisamos fazer 2 for para ter todas as informações que precisamos. 
 
 Primeiro **for** temos acesso ao tipo de sabor (Tradicional, Premium, Sorvet (fruta), Açai) e a quantidade de bolas que podemos selecionar conforme o pote.
 
@@ -157,7 +159,7 @@ Quando você usa **`.prop('disabled', true)`**, está basicamente definindo a pr
 {% endblock scripts %}
 ```
 
-Agora precisamos calcular o valor maximo selecionado 
+## Agora precisamos calcular o valor maximo selecionado
 
 **Alternativas**
 
@@ -378,14 +380,14 @@ $(document).ready(function(){
 Só faltou um detalhe que gostaria de passar. 
 É uma melhoria visual para mostrar para usuario que já foi selecionado tudo. Só detalhe mesmo. Se quiser não precisa colocar.
 
-*modal sabores.html*
+**`*modal sabores.html*`**
 
 ```python
 <span class="badge bg-secondary" id="impResponse{{emb.id}}">Obrigatório</span></span>
 
 ```
 
-*cardapio.html*
+**`*cardapio.html*`**
 
 ```python
 function atualizarColorSuccess(modalId) {
@@ -444,7 +446,7 @@ $(document).on('click', '.minus', function() {
 
 **Cobertura vamos adicionar a lista de coberturas/adicionais no modal.**
 
-*views.py*
+**`*views.py*`**
 
 ```python
 def cardapio(request):
@@ -459,7 +461,7 @@ def cardapio(request):
     return render(request, 'cardapio.html', context)
 ```
 
-*sabores.html*
+**`*sabores.html*`**
 
 ```python
 ...
@@ -484,7 +486,7 @@ def cardapio(request):
 ... 
 ```
 
-*cardapio.html **— scripts***
+**`*cardapio.html — scripts*`**
 
 ```python
 // Coberturas/Adicionais 
@@ -505,7 +507,7 @@ $(document).on('click', '.minus', function(){
 
 **Agora vamos configurar a quantidade de potes que podemos selecionar.**
 
-*sabores.html*
+**`*sabores.html*`**
 
 ```html
 <div class="modal-footer"> 
@@ -518,7 +520,7 @@ $(document).on('click', '.minus', function(){
 </div>
 ```
 
-*cardapio.html*
+**`*cardapio.html*`**
 
 ```html
 // Quantidade de itens
